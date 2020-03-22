@@ -307,7 +307,7 @@ const prefixCmd = new TwoPartCommand(
     const permissions = await bot.getUserPermissions(await bot.getUser(), channel);
     if (!permissions.canWrite) {
       if (bot.removeData(channel)) {
-        bot.logger.warn(`Can't write to channel ${channel.getLabel()}, removing all data.`);
+        bot.logger.warn(`Can't write to channel ${channel.label}, removing all data.`);
       }
       return;
     }
@@ -732,6 +732,7 @@ const labelCmd = new TwoPartCommand(
 
     let label = channelLabel.trim();
 
+    // TODO: Maybe these logs should also be part of channel.ts, not sure though
     // Check if the user wants to reset the label
     if (label === 'reset') {
       label = undefined;
@@ -746,47 +747,7 @@ const labelCmd = new TwoPartCommand(
       );
     }
 
-    // Save locally
     labelChannel.label = label;
-
-    // Save in the JSON file
-    const subscribers = DataManager.getSubscriberData();
-    const channels = subscribers[channelBot.name];
-
-    // Check if the channel is already registered
-    const existingChannelId = channels.findIndex((ch) => labelChannel.isEqual(ch.id));
-    if (existingChannelId >= 0) {
-      const existingChannel = channels[existingChannelId];
-      // Update label
-      existingChannel.label = label;
-
-      // Remove unnecessary entries
-      if (
-        existingChannel.gameSubs.length === 0 &&
-        !existingChannel.prefix &&
-        !existingChannel.label
-      ) {
-        channelBot.logger.debug(
-          `Removing unnecessary entry for channel ${labelChannel.getLabel()}...`,
-        );
-        channels.splice(existingChannelId, 1);
-      } else {
-        channels[existingChannelId] = existingChannel;
-      }
-      // Save changes
-      subscribers[channelBot.name] = channels;
-      DataManager.setSubscriberData(subscribers);
-    } else {
-      // Add channel with the new label
-      channels.push({
-        gameSubs: [],
-        id: labelChannel.id,
-        label,
-      });
-      // Save the changes
-      subscribers[channelBot.name] = channels;
-      DataManager.setSubscriberData(subscribers);
-    }
   },
   // Default action
   async (message) => {

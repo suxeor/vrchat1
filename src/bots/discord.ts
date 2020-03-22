@@ -169,15 +169,13 @@ export default class DiscordBot extends BotClient {
 
         return new Permissions(hasAccess, canWrite, canEdit, canPin);
       } catch (error) {
-        this.logger.error(
-          `Failed to get permissions for text channel ${channel.getLabel()}:\n${error}`,
-        );
+        this.logger.error(`Failed to get permissions for text channel ${channel.label}:\n${error}`);
         throw error;
       }
     }
 
     this.logger.error(
-      `Unecpected Discord channel type for channel ${channel.getLabel()}: ${discordChannel}`,
+      `Unecpected Discord channel type for channel ${channel.label}: ${discordChannel}`,
     );
     return new Permissions(false, false, false, false);
   }
@@ -200,7 +198,7 @@ export default class DiscordBot extends BotClient {
       const discordUser = discordChannel.members.get(user.id);
       canEmbed = discordChannel.permissionsFor(discordUser).has('EMBED_LINKS');
     } else {
-      this.logger.error(`Unecpected Discord channel type for channel ${channel.getLabel()}.`);
+      this.logger.error(`Unecpected Discord channel type for channel ${channel.label}.`);
       canEmbed = false;
     }
 
@@ -292,13 +290,13 @@ export default class DiscordBot extends BotClient {
       const permissions = await this.getUserPermissions(await this.getUser(), channel);
       if (!permissions.canWrite) {
         if (this.removeData(channel)) {
-          this.logger.warn(`Can't write to channel ${channel.getLabel()}, removing all data.`);
+          this.logger.warn(`Can't write to channel ${channel.label}, removing all data.`);
         }
         return false;
       }
     } catch (error) {
       this.logger.error(
-        `Failed to get user permissions while sending to channel ${channel.getLabel()}:\n${error}`,
+        `Failed to get user permissions while sending to channel ${channel.label}:\n${error}`,
       );
       return false;
     }
@@ -309,7 +307,7 @@ export default class DiscordBot extends BotClient {
       try {
         return await this.sendToChannel(channel, messageText);
       } catch (error) {
-        this.logger.error(`Failed to send message to channel ${channel.getLabel()}:\n${error}`);
+        this.logger.error(`Failed to send message to channel ${channel.label}:\n${error}`);
         return false;
       }
     }
@@ -321,7 +319,7 @@ export default class DiscordBot extends BotClient {
       try {
         return await this.sendToChannel(channel, '', embed);
       } catch (error) {
-        this.logger.error(`Failed to send message to channel ${channel.getLabel()}:\n${error}`);
+        this.logger.error(`Failed to send message to channel ${channel.label}:\n${error}`);
         return false;
       }
     }
@@ -331,7 +329,7 @@ export default class DiscordBot extends BotClient {
     try {
       return await this.sendToChannel(channel, messageText);
     } catch (error) {
-      this.logger.error(`Failed to send message to channel ${channel.getLabel()}:\n${error}`);
+      this.logger.error(`Failed to send message to channel ${channel.label}:\n${error}`);
       return false;
     }
   }
@@ -480,7 +478,7 @@ export default class DiscordBot extends BotClient {
     try {
       discordChannel = botChannels.get(channel.id);
     } catch (error) {
-      this.logger.error(`Failed to get discord channel ${channel.getLabel()}:\n${error}`);
+      this.logger.error(`Failed to get discord channel ${channel.label}:\n${error}`);
       return false;
     }
 
@@ -496,7 +494,7 @@ export default class DiscordBot extends BotClient {
       } else {
         errorMsg = error.toString();
       }
-      this.logger.error(`Failed to send message to channel ${channel.getLabel()}:\n${errorMsg}`);
+      this.logger.error(`Failed to send message to channel ${channel.label}:\n${errorMsg}`);
       return false;
     };
 
@@ -514,7 +512,7 @@ export default class DiscordBot extends BotClient {
         return true;
       }
     } catch (error) {
-      this.logger.error(`Failed to send message to channel ${channel.getLabel()}:\n${error}`);
+      this.logger.error(`Failed to send message to channel ${channel.label}:\n${error}`);
     }
     return false;
   }
