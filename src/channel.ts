@@ -73,9 +73,12 @@ export default class Channel {
   set prefix(value) {
     let newPrefix = value;
     // Check if the user wants to reset the prefix
+    this.bot.logger.debug(newPrefix);
     if (newPrefix === 'reset') {
       newPrefix = this.bot.prefix;
     }
+
+    this.bot.sendMessage(this, `Changing the bot's prefix on this channel to \`${newPrefix}\`.`);
 
     // Save locally
     this._prefix = newPrefix;

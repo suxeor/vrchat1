@@ -307,8 +307,6 @@ const prefixCmd = new TwoPartCommand(
       return;
     }
 
-    bot.sendMessage(channel, `Changing the bot's prefix on this channel to \`${newPrefix}\`.`);
-
     channel.prefix = newPrefix;
   },
   // Default action
