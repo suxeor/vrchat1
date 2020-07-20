@@ -70,7 +70,7 @@
     "escape-string-regexp": "2.0.0",
     "feed-read": "0.0.1",
     "fs": "0.0.1-security",
-    "lodash": "4.17.15",
+    "lodash": "4.17.19",
     "logform": "2.1.2",
     "node-telegram-bot-api": "0.40.0",
     "request": "2.88.2",
